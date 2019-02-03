@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "prestart:client": "echo '📦   Bundling client'",
+    "prestart:server": "echo '📦   Bundling server'",
+    "client": "cd client && yarn start",
+    "start:server": "webpack --watch --inspect --config ./webpack.server.js",
+    "start:dev": "concurrently 'yarn start:client' 'nodemon --exec yarn start:server'",
+    "start": "concurrently 'yarn client' 'yarn start:server'"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "8.0.4",
+    "concurrently": "^4.0.1",
+    "express": "^4.16.3",
+    "nodemon": "^1.18.4",
+    "nodemon-webpack-plugin": "^4.0.3",
+    "webpack": "4.19.1",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3"
+  }
+}
