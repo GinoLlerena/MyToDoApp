@@ -1,7 +1,7 @@
 import express from 'express';
 const UserRouter = express.Router();
 
-let myStatusList = [{id:'1', name:'status 1'}, {id:'2', name:'status 2'}, {id:'3', name:'status 3'}, {id:'4', name:'status 4'}]
+let myStatusList = [{id:'1', name:'status 1', checked:false}, {id:'2', name:'status 2', checked:false}, {id:'3', name:'status 3', checked:true}, {id:'4', name:'status 4', checked:false}]
 
 
 UserRouter.get('/:id', (req, res) => {

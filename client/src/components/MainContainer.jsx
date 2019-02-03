@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import service from '../services/services'
 
 
-const ListItem = ({status, onDelete, callSelect})=> {
+const ListItem = ({status, onDelete, callSelect, callChecked})=> {
 
   return (
     <li className="list-group-item">
       <div className="row">
-        <div className="col-md-10"> {status.name}</div>
+        <div className="col-md-10"><input type="checkbox" id="cbox2" checked={status.checked} onChange={callChecked} />  {status.name} </div>
         <div className="col-md-1"><a className="btn btn-link" onClick={callSelect}>Edit</a></div>
         <div className="col-md-1"><a className="btn btn-link" onClick={onDelete}>Delete</a></div>
       </div>
@@ -78,8 +78,15 @@ class MainContainer extends Component{
 
     const idx = this.state.list.findIndex(item => item.id === id);
 
-    const status = {...this.state.list[idx], name};
+    const status =  {...this.state.list[idx], name};
 
+    service.updateStatus(status).then((data)=>{
+      const {statusList} = data;
+      this.setState({list: statusList, name:'', id:null})
+    })
+  }
+
+  onUpdateChecked = (status) => {
     service.updateStatus(status).then((data)=>{
       const {statusList} = data;
       this.setState({list: statusList, name:'', id:null})
@@ -98,6 +105,18 @@ class MainContainer extends Component{
     })
   }
 
+  onChecked = (id) => {
+    const {list} = this.state;
+
+    const idx = list.findIndex(item => item.id === id);
+
+    const item = this.state.list[idx];
+
+    const status = { ...item, checked: !item.checked}
+
+    this.onUpdateChecked(status);
+
+  }
 
   componentDidMount() {
      this.getAllStatus();
@@ -110,7 +129,8 @@ class MainContainer extends Component{
       (item,i) => {
                       const callDelete = () => this.onDelete(item.id);
                       const callSelect = () => this.onSelected(item.id);
-                      return(<ListItem key={i} status={item} onDelete={callDelete} callSelect={callSelect} />)
+                      const callChecked = () => this.onChecked(item.id);
+                      return(<ListItem key={i} status={item} onDelete={callDelete} callSelect={callSelect} callChecked={callChecked} />)
     }): null
 
     return(
